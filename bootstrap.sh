@@ -48,7 +48,7 @@ ln -snf $VTTOP/py $VTROOT/py-vtdb
 ln -snf $VTTOP/go/cmd/mysqlctl/mysqlctl $VTROOT/bin/mysqlctl
 ln -snf $VTTOP/go/cmd/normalizer/normalizer $VTROOT/bin/normalizer
 ln -snf $VTTOP/go/cmd/vtaction/vtaction $VTROOT/bin/vtaction
-ln -snf $VTTOP/go/cmd/vtbarnacle/vtbarnacle $VTROOT/bin/vtbarnacle
+ln -snf $VTTOP/go/cmd/vtgate/vtgate $VTROOT/bin/vtgate
 ln -snf $VTTOP/go/cmd/vtclient2/vtclient2 $VTROOT/bin/vtclient2
 ln -snf $VTTOP/go/cmd/vtctl/vtctl $VTROOT/bin/vtctl
 ln -snf $VTTOP/go/cmd/vtctld/vtctld $VTROOT/bin/vtctld
@@ -67,9 +67,10 @@ if [ -d $VTROOT/dist/mysql ];
 then
   echo "skipping MySQL build"
 else
-  git clone https://code.google.com/p/google-mysql/ third_party/mysql
+  git clone -b "mysql-5.1.63/20-fixes-google-2" https://code.google.com/p/google-mysql/ third_party/mysql
   pushd third_party/mysql
   cp client/mysqlbinlog.cc client/vt_mysqlbinlog.cc
+  cp ../httpd_request.cc sql/httpd_request.cc
   git apply ../mysql.patch
   set -e
   enable_minimal="--enable-minimal"
